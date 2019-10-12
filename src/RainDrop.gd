@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var velocity = Vector2()
-var speed = 400
+var speed = 600
 
 func _physics_process(delta):
     velocity.y = speed * delta
@@ -10,6 +10,6 @@ func _physics_process(delta):
 
     if collision:
         var flower = collision.get_collider()
-        flower.grow()
+        flower.add_water()
         get_parent().remove_child(self)
 
