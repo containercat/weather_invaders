@@ -28,8 +28,8 @@ script = ExtResource( 2 )
 [node name="Flowers" type="Node" parent="GameController"]
 
 [node name="Background" type="Sprite" parent="."]
-position = Vector2( 965.623, 537.463 )
-scale = Vector2( 1.58502, 1.65138 )
+position = Vector2( 962.452, 550.634 )
+scale = Vector2( 0.999338, 1.04663 )
 z_index = -1
 texture = ExtResource( 3 )
 script = ExtResource( 4 )

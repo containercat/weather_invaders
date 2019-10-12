@@ -7,6 +7,11 @@ var sapling_texture = preload("res://assets/sapling.png")
 var leaves_texture = preload("res://assets/leaves.png")
 var blossomed_texture = preload("res://assets/blossomed.png")
 
+
+var water_texture_1 = preload("res://assets/water1.png")
+var water_texture_2 = preload("res://assets/water2.png")
+var water_texture_3 = preload("res://assets/water3.png")
+
 var status
 var sprite
 var game_controller
@@ -25,10 +30,17 @@ var ms_wait_time = 0.01
 
 var current_time
 
+var water
+
 func _ready():
+    scale /= 2
+
+    # get nodes
     sprite = get_node("Sprite")
     counter = get_node("Counter")
-
+    water = get_node("Water")
+    
+    water.texture = null
     current_time = plant_timer
 
     timer = Timer.new()
@@ -50,13 +62,17 @@ func _ready():
     status = POT
 
 func add_water():
-    if water_level == 0:
-        timer.start()
-        #ms_timer.start()
-        current_time = plant_timer
-
+    
     if water_level < 3:
         water_level += 1
+
+    if timer.is_stopped():
+        print("happens")
+        timer.start()
+        update()
+        current_time = plant_timer
+    
+
 
 
 func on_MSTimer_timeout():
@@ -67,7 +83,8 @@ func on_MSTimer_timeout():
 
     current_time -= ms_wait_time
 
-func on_Timer_timeout():
+
+func update():
     if water_level == 0:
         decay()
 
@@ -77,9 +94,25 @@ func on_Timer_timeout():
     if water_level >= 3:
         sprite.texture = pot_texture
         status = POT
+        water_level = 0
 
+    match water_level:
+        0:
+            water.texture = null
+        1:
+            water.texture = water_texture_1 
+        2:
+            water.texture = water_texture_2
+        3:
+            water.texture = water_texture_3
+    
     if water_level > 0:
         water_level -= 1
+
+
+func on_Timer_timeout():
+    update()
+    
 
 func decay():
     match status:
