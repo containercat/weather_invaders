@@ -7,6 +7,7 @@ var flower_scene = preload("res://scenes/Flower.tscn")
 var points_label
 var points = 0
 
+
 func _ready():
     points_label = get_node("../Points")
 
@@ -29,8 +30,17 @@ func _ready():
         var flower = flower_scene.instance()
         flower.position = Vector2(x, y)
         flower.scale *= 2
-
         get_node("Flowers").add_child(flower)
 
 func _process(delta):
     points_label.text = str(points)
+
+    var blossom_count = 0
+
+
+    for node in get_node("Flowers").get_children():
+        if node.status == 3:
+            blossom_count += 1
+    
+    if blossom_count >= 4:
+        get_node("../Label").text = "YOU WIN"

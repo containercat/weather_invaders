@@ -5,7 +5,11 @@ enum { POT, SAPLING, LEAVES, BLOSSOMED }
 var pot_texture = preload("res://assets/pot.png")
 var sapling_texture = preload("res://assets/sapling.png")
 var leaves_texture = preload("res://assets/leaves.png")
-var blossomed_texture = preload("res://assets/blossomed.png")
+var blossomed_texture = preload("res://assets/grown.png")
+
+var sapling_texture_decayed = preload("res://assets/sapling-decayed.png")
+var leaves_texture_decayed = preload("res://assets/leaves-decayed.png")
+var grown_texture_decayed = preload("res://assets/grown-decayed.png")
 
 
 var water_texture_1 = preload("res://assets/water1.png")
@@ -16,8 +20,12 @@ var status
 var sprite
 var game_controller
 
-var decay_time
+var decayed = false
+
+var decay_time = 5
+
 var water_level = 0
+var decay_timer
 
 var counter
 
@@ -48,7 +56,14 @@ func _ready():
     
     timer.connect("timeout", self, "on_Timer_timeout")
     timer.set_wait_time(plant_timer)
-    timer.set_one_shot(false)
+    timer.set_one_shot(true)
+    
+    decay_timer = Timer.new()
+    add_child(decay_timer)
+    
+    decay_timer.connect("timeout", self, "on_DecayTimer_timeout")
+    decay_timer.set_wait_time(decay_time)
+    decay_timer.set_one_shot(true)
 
     #ms_timer = Timer.new();
     #add_child(ms_timer)
@@ -62,69 +77,35 @@ func _ready():
     status = POT
 
 func add_water():
-    
-    if water_level < 3:
-        water_level += 1
+    print("status: " + str(status) + " " + "decayed: " + str(decay_timer.time_left) + "decayedstatus: " + str(decayed))
+    if decayed:
+        return
 
     if timer.is_stopped():
-        print("happens")
+        decay_timer.stop()
         timer.start()
-        update()
-        current_time = plant_timer
-    
-
-
-
-func on_MSTimer_timeout():
-    if current_time <= 0:
-        current_time = plant_timer
-
-    counter.text = str(current_time)
-
-    current_time -= ms_wait_time
-
-
-func update():
-    if water_level == 0:
-        decay()
-
-    if water_level >= 1 && water_level <= 2:
         grow()
 
-    if water_level >= 3:
-        sprite.texture = pot_texture
-        status = POT
-        water_level = 0
-
-    match water_level:
-        0:
-            water.texture = null
-        1:
-            water.texture = water_texture_1 
-        2:
-            water.texture = water_texture_2
-        3:
-            water.texture = water_texture_3
-    
-    if water_level > 0:
-        water_level -= 1
+func on_DecayTimer_timeout():
+    decay()
 
 
 func on_Timer_timeout():
-    update()
+    decay_timer.start()
+    print("decay start")
     
 
 func decay():
+    #status = POT
+    decayed = true
+
     match status:
         SAPLING:
-            sprite.texture = pot_texture
-            status = POT
+            sprite.texture = sapling_texture_decayed
         LEAVES:
-            sprite.texture = sapling_texture
-            status = SAPLING
+            sprite.texture = leaves_texture_decayed
         BLOSSOMED:
-            sprite.texture = leaves_texture
-            status = LEAVES
+            sprite.texture = grown_texture_decayed
 
 
 func grow():
