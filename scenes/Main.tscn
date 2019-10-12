@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/Cloud.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/GameController.gd" type="Script" id=2]
+[ext_resource path="res://assets/background.png" type="Texture" id=3]
+[ext_resource path="res://src/Background.gd" type="Script" id=4]
+
+[node name="Main" type="Node2D"]
+
+[node name="Cloud" parent="." instance=ExtResource( 1 )]
+position = Vector2( 462.655, 74.0247 )
+
+[node name="GameController" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="Flowers" type="Node" parent="GameController"]
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 962.107, 542.738 )
+scale = Vector2( 1.58502, 1.65138 )
+z_index = -1
+texture = ExtResource( 3 )
+script = ExtResource( 4 )
