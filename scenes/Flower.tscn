@@ -1,26 +1,18 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://src/Flower.gd" type="Script" id=1]
-[ext_resource path="res://assets/pot.png" type="Texture" id=2]
+[ext_resource path="res://scenes/FlowerSprite.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/DroidSansMono.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://assets/water1.png" type="Texture" id=4]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 50.4341, 69.7492 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 30
 font_data = ExtResource( 3 )
 
-[node name="Flower" type="StaticBody2D"]
+[node name="Flower" type="Node2D"]
 script = ExtResource( 1 )
+gravity = 0.1
 
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -4.14168, 123.959 )
-shape = SubResource( 1 )
+[node name="FlowerSprite" parent="." instance=ExtResource( 2 )]
 
 [node name="Counter" type="Label" parent="."]
 visible = false
@@ -30,6 +22,3 @@ margin_right = 17.9472
 margin_bottom = 86.0392
 custom_fonts/font = SubResource( 2 )
 text = "0"
-
-[node name="Water" type="Sprite" parent="."]
-texture = ExtResource( 4 )
